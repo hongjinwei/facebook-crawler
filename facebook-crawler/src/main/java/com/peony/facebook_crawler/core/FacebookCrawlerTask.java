@@ -1,5 +1,6 @@
 package com.peony.facebook_crawler.core;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -13,6 +14,7 @@ import com.peony.facebook_crawler.model.FBSource;
 import com.peony.facebook_crawler.model.ParseResult;
 import com.peony.facebook_crawler.model.WebPage;
 import com.peony.util.StringUtils;
+import com.peony.util.TimerUtils;
 import com.peony.util.cache.CacheClient;
 import com.peony.util.http.BaseHttpException;
 import com.peony.util.http.HttpQuery;
@@ -31,7 +33,15 @@ public class FacebookCrawlerTask implements Runnable {
 	private boolean shouldCrawl(FBSource source) {
 		long curr = System.currentTimeMillis();
 		long last = source.getLastoptime();
-		return (curr - last) > (source.getCycle() * 60 * 60 * 1000l);
+		LOGGER.info("上次运行时间 : " + new Timestamp(last));
+		// 设定 可以提前10分钟开始
+		long interval = (source.getCycle() * 60 - 10) * 60 * 1000l;
+		if ((curr - last) >= interval) {
+			return true;
+		} else {
+			LOGGER.info(source.getName() + "任务还未到开始时间！上次操作时间：" + new Timestamp(last) + " 现在：" + new Timestamp(curr));
+			return false;
+		}
 	}
 
 	private String request(String url) throws BaseHttpException {
@@ -58,7 +68,7 @@ public class FacebookCrawlerTask implements Runnable {
 						continue;
 					}
 					try {
-						CommonUtils.storage(docUrl, true, page.getId(), content, true);
+						CommonUtils.storage(docUrl, true, page.getPageId(), content, true);
 					} catch (Exception e) {
 						LOGGER.error(e.getMessage() + "保存至文档服务器失败！", e);
 						continue;
@@ -99,16 +109,14 @@ public class FacebookCrawlerTask implements Runnable {
 	@Override
 	public void run() {
 		List<FBSource> sources = FBSourceManager.getSources();
-		for (FBSource source : sources) {
-			System.out.print(source.getName() + " ");
-		}
-		System.out.println();
+		LOGGER.info(sources.toString());
 		if (sources.size() == 0) {
 			LOGGER.info("没有任务！");
 		}
 		for (FBSource source : sources) {
 			LOGGER.info("开始任务 ：" + source.getName());
 			crawl(source);
+			TimerUtils.delay();
 			LOGGER.info("任务结束：" + source.getName());
 		}
 	}

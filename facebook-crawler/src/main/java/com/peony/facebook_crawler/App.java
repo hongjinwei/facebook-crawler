@@ -21,7 +21,7 @@ public class App {
 	}
 
 	public static void main(String[] args) {
-		setLocalTest();
+		// setLocalTest();
 		FacebookCrawlerTaskService.start();
 	}
 }

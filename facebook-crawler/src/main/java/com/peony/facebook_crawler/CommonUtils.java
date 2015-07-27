@@ -18,6 +18,8 @@ public class CommonUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtils.class);
 
+	private static final String defaultDocUrl = "http://119.254.110.32:8080/HBaseDfs/dfs";
+	
 	public static String absUrl(String baseUrl, String relUrl) {
 		URL base;
 		try {
@@ -144,4 +146,16 @@ public class CommonUtils {
 		storage.useHttpFileSystem(baseUrl);
 		storage.put(id, content, true, isPureText);
 	}
+	
+	public static void storage(boolean comp, String id, String content, boolean isPureText) throws Exception {
+		if(!SystemProps.storeable()){
+			LOGGER.info("设置了系统参数，不存储文章到文档服务器！");
+			return;
+		}
+		
+		WebPageStorage storage = new WebPageStorage(comp);
+		storage.useHttpFileSystem(defaultDocUrl);
+		storage.put(id, content, true, isPureText);
+	}
+	
 }

@@ -16,6 +16,7 @@ import com.peony.facebook_crawler.CrawlerUtils;
 import com.peony.facebook_crawler.model.FBSource;
 import com.peony.facebook_crawler.model.ParseResult;
 import com.peony.facebook_crawler.model.WebPage;
+import com.peony.util.StringUtils;
 
 public class FacebookPageParser {
 
@@ -34,6 +35,8 @@ public class FacebookPageParser {
 		for (Element el : elements) {
 			try {
 				String content = el.getElementsByAttributeValue("class", "_5pbx userContent").get(0).text();
+				content = StringUtils.cleanEmoji(content);
+
 				String timeStr = el.getElementsByAttribute("data-utime").get(0).attr("data-utime");
 				String relUrl = el.getElementsByAttributeValue("class", "_5pcq").get(0).attr("href");
 				String url = CommonUtils.absUrl(parentUrl, relUrl);

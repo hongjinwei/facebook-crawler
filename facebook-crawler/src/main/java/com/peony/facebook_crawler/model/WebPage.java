@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.peony.util.StringUtils;
@@ -22,8 +21,8 @@ public class WebPage {
 	/**
 	 * 网页ID，目前采用对url进行MD5加密
 	 */
-	@Id
-	private String id;
+	@Column(name = "id")
+	private String pageId;
 
 	/**
 	 * 网页URL
@@ -87,7 +86,7 @@ public class WebPage {
 
 	@Column(name = "authorUrl")
 	private String authorUrl;
-	
+
 	public String getAuthorUrl() {
 		return authorUrl;
 	}
@@ -123,19 +122,19 @@ public class WebPage {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
-		if (StringUtils.isEmpty(id)) {
-			this.id = StringUtils.MD5(url);
+	public String getPageId() {
+		if (StringUtils.isEmpty(pageId)) {
+			this.pageId = StringUtils.MD5(url);
 		}
-		return this.id;
+		return this.pageId;
 	}
 
 	/**
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public void setPageId(String pageId) {
+		this.pageId = pageId;
 	}
 
 	/**

@@ -47,4 +47,7 @@ public class FBSource {
 		this.cycle = cycle;
 	}
 
+	public String toString(){
+		return this.getName();
+	}
 }

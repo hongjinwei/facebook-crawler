@@ -13,7 +13,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.avaje.ebeaninternal.util.SortByClause;
 import com.peony.facebook_crawler.model.FBSource;
 
 public class FBSourceManager {

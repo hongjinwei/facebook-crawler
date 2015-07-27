@@ -35,10 +35,14 @@ public class Encrypt {
 		html = html.substring(0, html.indexOf("</script>"));
 		html = html.substring(0, html.indexOf("]]});")+3);
 		JSONArray obj = JSON.parseObject(html).getJSONArray("require").getJSONArray(47).getJSONArray(3).getJSONArray(2);
-		String res = (String) inv.invokeFunction("solveAndEncode", obj.get(0), obj.get(1), obj.get(2), obj.get(3), obj.get(4));
-		StringBuilder buf = new StringBuilder(res);
-		buf.insert(res.indexOf('{') + 1, "\"" + obj.get(6) + "\"");
-		byte[] base642 = Base64.encodeBase64(buf.toString().getBytes());
-		return new String(base642);
+		for (int i = 1; i < 5; i++) {
+			System.out.println(obj.get(i));
+		}
+		return "";
+//		String res = (String) inv.invokeFunction("solveAndEncode", obj.get(0), obj.get(1), obj.get(2), obj.get(3), obj.get(4));
+//		StringBuilder buf = new StringBuilder(res);
+//		buf.insert(res.indexOf('{') + 1, "\"" + obj.get(6) + "\"");
+//		byte[] base642 = Base64.encodeBase64(buf.toString().getBytes());
+//		return new String(base642);
 	}
 }
