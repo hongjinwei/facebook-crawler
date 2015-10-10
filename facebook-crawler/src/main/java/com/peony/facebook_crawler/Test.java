@@ -1,4 +1,4 @@
-package com.peony.facebook_crawler.core;
+package com.peony.facebook_crawler;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -8,21 +8,20 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.peony.facebook_crawler.CommonUtils;
-import com.peony.facebook_crawler.CrawlerUtils;
 import com.peony.facebook_crawler.model.FBSource;
 import com.peony.facebook_crawler.model.ParseResult;
 import com.peony.facebook_crawler.model.WebPage;
 import com.peony.util.StringUtils;
+import com.peony.util.http.HttpQuery;
 
-public class FacebookPageParser {
+public class Test {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookPageParser.class);
+	public Test() {
+		// TODO Auto-generated constructor stub
+	}
 
-	private static Element cleanFacebookPage(String htmlPage) {
+	public static Element cleanFacebookPage(String htmlPage) {
 
 		Document doc = Jsoup.parse(htmlPage);
 		Elements codeElements = doc.select("code");
@@ -34,23 +33,26 @@ public class FacebookPageParser {
 			for (Element elem : codeElements) {
 				String elemContent = elem.outerHtml();
 				List<String> matchContentList = StringUtils.match(elemContent, "<!--(.*)-->");
-				if (matchContentList.size() == 0) {
-					continue;
-				}
-				elemContent = matchContentList.get(0);
+				elemContent = (matchContentList.size() == 0) ? "" : matchContentList.get(0);
 				Document codeDoc = Jsoup.parse(elemContent);
+				// int numberOfPTag = codeDoc.select("p").size();
+
 				String content = StringUtils.excludeHTML(codeDoc.text());
 				int weight = (content == null) ? 0 : content.length();
 				if (weight > maxWeight) {
 					maxWeight = weight;
 					contentElem = codeDoc;
 				}
+				// System.out.println(elemContent);
+				// System.out.println("=====");
+				// System.out.println(StringUtils.excludeHTML(codeDoc.text()));
+				// System.out.println("------------------------------------\n");
 			}
 			return contentElem;
 		}
 	}
 
-	public static List<ParseResult> parse(String html, FBSource source) throws Exception {
+	public static List<ParseResult> newparse(String html, FBSource source) throws Exception {
 		String parentUrl = source.getHomepage();
 		List<ParseResult> ans = new ArrayList<ParseResult>();
 		Element contentNode = cleanFacebookPage(html);
@@ -87,46 +89,19 @@ public class FacebookPageParser {
 		return ans;
 	}
 
-	@Deprecated
-	public static List<ParseResult> parse_old(String html, FBSource source) throws Exception {
-		String parentUrl = source.getHomepage();
-		List<ParseResult> ans = new ArrayList<ParseResult>();
-		Document d = Jsoup.parse(html);
-		Element ele = d.getElementsByAttributeValue("class", "hidden_elem").get(7);
-		String raw_content = ele.html().replace("<!--", "").replace("-->", "");
-
-		Document doc = Jsoup.parse(raw_content);
-		Element element = doc.getElementsByAttributeValue("class", "_5sem").get(0);
-		Elements elements = element.getElementsByAttribute("data-ft");
-		for (Element el : elements) {
-			try {
-				String content = el.getElementsByAttributeValue("class", "_5pbx userContent").get(0).text();
-				content = StringUtils.cleanEmoji(content);
-
-				String timeStr = el.getElementsByAttribute("data-utime").get(0).attr("data-utime");
-				String relUrl = el.getElementsByAttributeValue("class", "_5pcq").get(0).attr("href");
-				String url = CommonUtils.absUrl(parentUrl, relUrl);
-				Timestamp publishDate = CrawlerUtils.getPublishTime(timeStr);
-				String summary = CrawlerUtils.getSummary(content);
-				String title = CrawlerUtils.getTitle(content);
-
-				WebPage page = new WebPage();
-				page.setTitle(title);
-				page.setSummary(summary);
-				page.setPublishDate(publishDate);
-				page.setUrl(url);
-				page.setDownloadDate(new Timestamp(System.currentTimeMillis()));
-				page.setWebSite("Facebook");
-				page.setType(11);
-				page.setIndexedStatus(3);
-				page.setAuthorName(source.getName());
-				page.setAuthorUrl(source.getHomepage());
-
-				ParseResult res = new ParseResult(content, page);
-				ans.add(res);
-			} catch (Exception e) {
-			}
+	public static void main(String[] args) throws Exception {
+		String html = HttpQuery.getInstance().get("https://www.facebook.com/llchu").asString();
+//		System.out.println(cleanFacebookPage(html).outerHtml());
+		
+		FBSource source = new FBSource("朱立伦", "https://www.facebook.com/llchu", 0);
+		List<ParseResult> res = newparse(html, source);
+		for(ParseResult s : res){
+			System.out.println(s.getContent());
+			System.out.println(s.getPage().getUrl());
+			System.out.println(s.getPage().getTitle());
+			System.out.println(s.getPage().getPublishDate());
+			System.out.println("==================");
 		}
-		return ans;
 	}
+
 }

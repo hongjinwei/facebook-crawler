@@ -2,9 +2,6 @@ package com.peony.facebook_crawler;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Timestamp;
-
-import md.base.storage.WebPageStorage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +10,12 @@ import com.peony.util.StringUtils;
 import com.peony.util.cache.CacheClient;
 import com.peony.util.cache.CacheClientPool;
 import com.peony.util.cache.CacheClientPoolFactory;
+import com.peony.util.dfs.FileSystem;
 
 public class CommonUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtils.class);
 
-	private static final String defaultDocUrl = "http://119.254.110.32:8080/HBaseDfs/dfs";
-	
 	public static String absUrl(String baseUrl, String relUrl) {
 		URL base;
 		try {
@@ -37,8 +33,6 @@ public class CommonUtils {
 			return "";
 		}
 	}
-
-
 
 	private static CacheClientPool pool = CacheClientPoolFactory.getObject();
 
@@ -107,7 +101,7 @@ public class CommonUtils {
 		if (mc != null) {
 			try {
 				long s = System.currentTimeMillis();
-				mc.storeUrl(url, true);
+				mc.storeUrl(url);
 				long e = System.currentTimeMillis();
 				if ((e - s) > 100) {
 					LOGGER.info("缓存URL耗时：" + (e - s));
@@ -134,28 +128,23 @@ public class CommonUtils {
 	 * @throws Exception
 	 */
 	public static void storage(String baseUrl, boolean comp, String id, String content, boolean isPureText) throws Exception {
-		if(!SystemProps.storeable()){
+		if (!SystemProps.storeable()) {
 			LOGGER.info("设置了系统参数，不存储文章到文档服务器！");
 			return;
 		}
-		
+
 		if (StringUtils.isEmpty(baseUrl)) {
 			return;
 		}
-		WebPageStorage storage = new WebPageStorage(comp);
-		storage.useHttpFileSystem(baseUrl);
-		storage.put(id, content, true, isPureText);
+		FileSystem.add(id, content, isPureText);
 	}
-	
+
 	public static void storage(boolean comp, String id, String content, boolean isPureText) throws Exception {
-		if(!SystemProps.storeable()){
+		if (!SystemProps.storeable()) {
 			LOGGER.info("设置了系统参数，不存储文章到文档服务器！");
 			return;
 		}
-		
-		WebPageStorage storage = new WebPageStorage(comp);
-		storage.useHttpFileSystem(defaultDocUrl);
-		storage.put(id, content, true, isPureText);
+		FileSystem.add(id, content, isPureText);
 	}
-	
+
 }

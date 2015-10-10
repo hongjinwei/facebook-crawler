@@ -91,7 +91,7 @@ public class FacebookCrawlerTask implements Runnable {
 		String html;
 		try {
 			html = request(homeUrl);
-		} catch (BaseHttpException e) {
+		} catch (Throwable e) {
 			String errormsg = "\n 爬取" + source.getName() + "的facebook失败  homepage：" + source.getHomepage();
 			LOGGER.error(e.getMessage() + errormsg, e);
 			return;
