@@ -128,7 +128,7 @@ public class CommonUtils {
 	 * @throws Exception
 	 */
 	public static void storage(String baseUrl, boolean comp, String id, String content, boolean isPureText) throws Exception {
-		if (!SystemProps.storeable()) {
+		if (!SystemProps.storeToDocDB()) {
 			LOGGER.info("设置了系统参数，不存储文章到文档服务器！");
 			return;
 		}
@@ -140,7 +140,7 @@ public class CommonUtils {
 	}
 
 	public static void storage(boolean comp, String id, String content, boolean isPureText) throws Exception {
-		if (!SystemProps.storeable()) {
+		if (!SystemProps.storeToDocDB()) {
 			LOGGER.info("设置了系统参数，不存储文章到文档服务器！");
 			return;
 		}

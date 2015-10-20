@@ -22,8 +22,34 @@ public class FacebookPageParser {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookPageParser.class);
 
-	private static Element cleanFacebookPage(String htmlPage) {
+	private static String extractHtmlAnotation(String html) {
+		return html.replaceAll("<!--", "").replaceAll("-->", "");
+	}
 
+	private static Document cleanFacebookPage(String htmlPage) {
+		Document doc = Jsoup.parse(htmlPage);
+		Elements codeElements = doc.select("code");
+		if (codeElements.size() <= 0) {
+			return null;
+		} else {
+			String contentString = null;
+			int maxWeight = 0;
+			for (Element elem : codeElements) {
+				String elemContent = elem.outerHtml();
+				int weight = (elemContent == null) ? 0 : elemContent.length();
+				if (weight > maxWeight) {
+					maxWeight = weight;
+					contentString = elemContent;
+				}
+			}
+			contentString = extractHtmlAnotation(contentString);
+			Document codeDoc = Jsoup.parse(contentString);
+			return codeDoc;
+		}
+	}
+
+	@Deprecated
+	private static Element cleanFacebookPage_backup(String htmlPage) {
 		Document doc = Jsoup.parse(htmlPage);
 		Elements codeElements = doc.select("code");
 		if (codeElements.size() <= 0) {

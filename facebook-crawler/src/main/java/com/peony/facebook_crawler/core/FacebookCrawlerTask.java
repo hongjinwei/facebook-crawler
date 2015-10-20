@@ -56,6 +56,7 @@ public class FacebookCrawlerTask implements Runnable {
 			for (ParseResult pr : list) {
 				WebPage page = pr.getPage();
 				String url = page.getUrl();
+				// WebPageRepository.showPage(page);
 				if (!CommonUtils.checkUrl(cache, url)) {
 					String content = pr.getContent();
 					if (StringUtils.isEmpty(content)) {
@@ -80,7 +81,7 @@ public class FacebookCrawlerTask implements Runnable {
 		} finally {
 			CommonUtils.recycleCacheClient(cache);
 		}
-		LOGGER.info(name + "的facebook 成功存储 " + count + " 条");
+		LOGGER.info(name + "的facebook 成功存储 " + count + " 条, 总共下载 " + list.size() + " 条");
 	}
 
 	private void crawl(FBSource source) {

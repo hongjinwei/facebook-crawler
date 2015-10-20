@@ -9,10 +9,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.peony.facebook_crawler.core.WebPageRepository;
 import com.peony.facebook_crawler.model.FBSource;
 import com.peony.facebook_crawler.model.ParseResult;
 import com.peony.facebook_crawler.model.WebPage;
 import com.peony.util.StringUtils;
+import com.peony.util.cache.CacheClient;
 import com.peony.util.http.HttpQuery;
 
 public class Test {
@@ -89,19 +91,27 @@ public class Test {
 		return ans;
 	}
 
-	public static void main(String[] args) throws Exception {
-		String html = HttpQuery.getInstance().get("https://www.facebook.com/llchu").asString();
-//		System.out.println(cleanFacebookPage(html).outerHtml());
-		
-		FBSource source = new FBSource("朱立伦", "https://www.facebook.com/llchu", 0);
-		List<ParseResult> res = newparse(html, source);
-		for(ParseResult s : res){
-			System.out.println(s.getContent());
-			System.out.println(s.getPage().getUrl());
-			System.out.println(s.getPage().getTitle());
-			System.out.println(s.getPage().getPublishDate());
-			System.out.println("==================");
+	/*
+	 * if true then url is stored in cache
+	 */
+	private static boolean checkUrl(String url) {
+		CacheClient cache = CommonUtils.getCacheClient();
+		try {
+			return CommonUtils.checkUrl(cache, url);
+		} finally {
+			CommonUtils.recycleCacheClient(cache);
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		// String html =
+		// HttpQuery.getInstance().get("https://www.facebook.com/llchu").asString();
+		// System.out.println(cleanFacebookPage(html).outerHtml());
+		
+		
+//		String url = "https://www.facebook.com/ChuChuPepper/photos/a.797092740380027.1073741828.796255990463702/892978667458100/?type=3";
+//		System.out.println(checkUrl(url));
+	System.out.println(StringUtils.MD5("https://www.facebook.com/ChuChuPepper/posts/892643437491623"));
 	}
 
 }

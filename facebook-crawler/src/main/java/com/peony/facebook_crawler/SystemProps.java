@@ -20,6 +20,8 @@ public class SystemProps {
 
 	public static final String TEST = "test";
 
+	public static final String STORE_TO_SQL = "store_to_sql";
+
 	/**
 	 * set if test
 	 * 
@@ -32,6 +34,22 @@ public class SystemProps {
 		} else {
 			System.setProperty(TEST, "false");
 		}
+	}
+
+	public static void setStoreToSql(boolean b) {
+		if (b) {
+			System.setProperty(STORE_TO_SQL, "true");
+		} else {
+			System.setProperty(STORE_TO_SQL, "false");
+		}
+	}
+
+	public static boolean storeToSql() {
+		String property = System.getProperty(STOREURL);
+		if (StringUtils.isEmpty(property)) {
+			return true;// 默认保存到sql
+		}
+		return StringUtils.parseBoolean(property, true);
 	}
 
 	/**
@@ -52,7 +70,7 @@ public class SystemProps {
 	 * 
 	 * @param b
 	 */
-	public static void setStoreable(boolean b) {
+	public static void setStoreToDocDB(boolean b) {
 		if (b) {
 			System.setProperty(STOREABLE, "true");
 		} else {
@@ -84,10 +102,10 @@ public class SystemProps {
 		return StringUtils.parseBoolean(property, true);
 	}
 
-	public static boolean storeable() {
+	public static boolean storeToDocDB() {
 		String property = System.getProperty(STOREABLE);
 		if (StringUtils.isEmpty(property)) {
-			return true;// 默认使用缓存
+			return true;// 默认保存到docDB
 		}
 		return StringUtils.parseBoolean(property, true);
 	}

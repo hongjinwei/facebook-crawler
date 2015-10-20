@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <items>
 	<item>
 		<name>蔡英文</name>
@@ -101,7 +102,7 @@
 		<name>馮光遠</name>
 		<location>台湾</location>
 		<type>政治人物</type>
-		<homepage>https://www.facebook.com/pages/%E9%A6%AE%E5%85%89%E9%81%A0/277581822281583</homepage>
+		<homepage>https://www.facebook.com/%E9%A6%AE%E5%85%89%E9%81%A0-277581822281583/</homepage>
 	</item>
 	<item>
 		<name>潘孟安</name>
@@ -119,7 +120,7 @@
 		<name>王金平</name>
 		<location>台湾</location>
 		<type>政治人物</type>
-		<homepage>https://www.facebook.com/pages/%E7%8E%8B%E9%87%91%E5%B9%B3/364390760239071</homepage>
+		<homepage>https://www.facebook.com/%E7%8E%8B%E9%87%91%E5%B9%B3-364390760239071/</homepage>
 	</item>
 	<item>
 		<name>李進勇</name>
@@ -167,13 +168,13 @@
 		<name>李鴻鈞</name>
 		<location>台湾</location>
 		<type>政治人物</type>
-		<homepage>https://www.facebook.com/pages/%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E6%9D%8E%E9%B4%BB%E9%88%9E/176709252368240</homepage>
+		<homepage>https://www.facebook.com/%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E6%9D%8E%E9%B4%BB%E9%88%9E-176709252368240/</homepage>
 	</item>
 	<item>
 		<name>鄭汝芬</name>
 		<location>台湾</location>
 		<type>政治人物</type>
-		<homepage>https://www.facebook.com/pages/%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E9%84%AD%E6%B1%9D%E8%8A%AC/246025718756404</homepage>
+		<homepage>https://www.facebook.com/%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E9%84%AD%E6%B1%9D%E8%8A%AC-246025718756404/</homepage>
 	</item>
 	<item>
 		<name>中國國民黨</name>
@@ -185,6 +186,6 @@
 		<name>廖正井</name>
 		<location>台湾</location>
 		<type>政治人物</type>
-		<homepage>https://www.facebook.com/pages/%E5%BB%96%E6%AD%A3%E4%BA%95%E7%AB%8B%E5%A7%94/590121424421164</homepage>
+		<homepage>https://www.facebook.com/%E5%BB%96%E6%AD%A3%E4%BA%95%E7%AB%8B%E5%A7%94-590121424421164/</homepage>
 	</item>
 </items>
